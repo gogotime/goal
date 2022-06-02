@@ -99,3 +99,26 @@ func (b *BinaryTreeNode[T]) MorisIn(handler func(v T)) {
 		cur = cur.Right
 	}
 }
+
+func (b *BinaryTreeNode[T]) DeleteNode(key T, less func(v1, v2 T) bool) *BinaryTreeNode[T] {
+	switch {
+	case less(b.Value, key):
+		b.Right = b.DeleteNode(key, less)
+	case less(key, b.Value):
+		b.Left = b.DeleteNode(key, less)
+	case b.Left == nil || b.Right == nil:
+		if b.Left == nil {
+			return b.Right
+		}
+		return b.Left
+	default:
+		resNode := b.Right
+		for resNode.Left != nil {
+			resNode = resNode.Left
+		}
+		resNode.Right = b.Right.DeleteNode(resNode.Value, less)
+		resNode.Left = b.Left
+		return resNode
+	}
+	return b
+}
