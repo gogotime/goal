@@ -41,8 +41,8 @@ func newSegTreeNode[T any]() *segTreeNode[T] {
 
 func segUpdate[T any](node *segTreeNode[T], curL, curR, ragL, ragR int, v T, selectFunc func(lv, rv T) T, updateFunc func(val, add T) T) {
 	if ragL <= curL && curR <= ragR {
-		node.add = v
-		node.val = updateFunc(node.val, node.add)
+		node.add = updateFunc(node.add, v)
+		node.val = updateFunc(node.val, v)
 		node.lazy = true
 		return
 	}
@@ -83,12 +83,13 @@ func segPushDown[T any](node *segTreeNode[T], updateFunc func(val, add T) T) {
 	if !node.lazy {
 		return
 	}
-	node.leftChild.add = node.add
-	node.leftChild.val = updateFunc(node.leftChild.val, node.leftChild.add)
+	node.leftChild.add = updateFunc(node.leftChild.add, node.add)
+	node.leftChild.val = updateFunc(node.leftChild.val, node.add)
 	node.leftChild.lazy = true
-	node.rightChild.add = node.add
-	node.rightChild.val = updateFunc(node.rightChild.val, node.rightChild.add)
+	node.rightChild.add = updateFunc(node.rightChild.add, node.add)
+	node.rightChild.val = updateFunc(node.rightChild.val, node.add)
 	node.rightChild.lazy = true
+	node.add = *new(T)
 	node.lazy = false
 }
 
