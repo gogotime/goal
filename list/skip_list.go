@@ -35,9 +35,9 @@ func (l *SkipList[K, V]) Insert(key K, val V) {
 	levelIdx := maxLevel - 1
 	pos := 0
 	for levelIdx >= 0 {
-		for node.level[levelIdx].next != nil && node.level[levelIdx].next.key <= key {
-			node = node.level[levelIdx].next
+		for node.level[levelIdx].next != nil && node.level[levelIdx].next.val <= val {
 			pos += node.level[levelIdx].span
+			node = node.level[levelIdx].next
 		}
 		l.entries[levelIdx].pos = pos
 		l.entries[levelIdx].node = node
@@ -52,7 +52,11 @@ func (l *SkipList[K, V]) Insert(key K, val V) {
 		next := node.level[levelIdx].next
 		node.level[levelIdx].next = newNode
 		newNode.level[levelIdx].next = next
-		newNode.level[levelIdx].span = node.level[levelIdx].span - (curNodePos - nodePos) + 1
+		if next != nil {
+			newNode.level[levelIdx].span = node.level[levelIdx].span - (curNodePos - nodePos) + 1
+		} else {
+			newNode.level[levelIdx].span = 0
+		}
 		node.level[levelIdx].span = curNodePos - nodePos
 		levelIdx++
 	}
@@ -72,7 +76,7 @@ func (l *SkipList[K, V]) Insert(key K, val V) {
 
 func (l *SkipList[K, V]) Print() {
 
-	levelIdx := l.level - 1
+	levelIdx := 7
 	for levelIdx >= 0 {
 
 		fmt.Printf("level %v:", levelIdx+1)
@@ -82,13 +86,14 @@ func (l *SkipList[K, V]) Print() {
 		for node != nil {
 			fmt.Printf("(%v,%v)", node.key, node.val)
 			if node.level[levelIdx].span != 0 {
-				fmt.Printf("--%v--", node.level[levelIdx].span)
+				fmt.Printf("- %v -", node.level[levelIdx].span)
 			}
 			node = node.level[levelIdx].next
 		}
 		fmt.Println()
 		levelIdx--
 	}
+	fmt.Println()
 
 }
 
