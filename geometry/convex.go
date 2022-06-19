@@ -1,6 +1,8 @@
 package geometry
 
-import "sort"
+import (
+	"sort"
+)
 
 func cross(p, q, r []int) int {
 	return (q[0]-p[0])*(r[1]-q[1]) - (q[1]-p[1])*(r[0]-q[0])
