@@ -146,10 +146,6 @@ func (l *SkipList[K, V]) Rank(key K) int {
 	return l.prevEntry[0].pos
 }
 
-func (l *SkipList[K, V]) RevRank(key K) int {
-	return -1
-}
-
 func (l *SkipList[K, V]) Print() {
 
 	levelIdx := l.level - 1
