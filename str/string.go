@@ -39,6 +39,28 @@ func LongestPalindromicSubstring(s string) int {
 	return ans
 }
 
+func findLengthOfShortestSubarray(arr []int) int {
+	n := len(arr)
+	j := n - 1
+	for j > 0 && arr[j-1] <= arr[j] {
+		j--
+	}
+	if j == 0 {
+		return 0
+	}
+	ans := j
+	for i := 0; i < n; i++ {
+		for j < n && arr[i] > arr[j] {
+			j++
+		}
+		ans = min(ans, j-i-1)
+		if i < n && arr[i+1] < arr[i] {
+			break
+		}
+	}
+	return ans
+}
+
 func max(a, b int) int {
 	if b > a {
 		return b
