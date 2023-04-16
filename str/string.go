@@ -1,6 +1,8 @@
 package str
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // 最长回文子串 https://blog.csdn.net/weixin_43501684/article/details/124325764
 func LongestPalindromicSubstring(s string) int {
